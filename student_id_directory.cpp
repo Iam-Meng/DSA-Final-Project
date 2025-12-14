@@ -18,21 +18,6 @@ struct Node
     Node *right;
 };
 
-Node *newNode(int id, const string *name, const string *major, const string *department)
-{
-    Node *n = new Node();
-    if (!n)
-    {
-        cout << "Memory Allocation Failed!" << endl;
-    }
-    n->id = id;
-    n->name = *name;
-    n->major = *major;
-    n->department = *department;
-    n->right = n->left = NULL;
-    return n;
-}
-
 Node *insert(Node *root, int id, const string *name, const string *major, const string *department, enrollDate *date)
 {
     if (!root)
@@ -56,7 +41,7 @@ Node *insert(Node *root, int id, const string *name, const string *major, const 
     }
     else
     {
-        cout << "This student ID:" << id << " is already exists!" << endl;
+        cout << "This student ID: " << id << " already exists!" << endl;
     }
     return root;
 }
@@ -65,7 +50,7 @@ Node *deletion(Node *root, int id)
 {
     if (!root)
     {
-        cout << "This student ID:" << id << "is not founded!" << endl;
+        cout << "This student ID: " << id << " is not found!" << endl;
         return NULL;
     }
     if (id < root->id)
@@ -82,14 +67,14 @@ Node *deletion(Node *root, int id)
         {
             Node *temp = root->right;
             delete root;
-            cout << "Student ID:" << id << "has deleted successessfully!" << endl;
+            cout << "Student ID: " << id << " has been deleted successfully!" << endl;
             return temp;
         }
         else if (!root->right)
         {
             Node *temp = root->left;
             delete root;
-            cout << "Student ID:" << id << "has deleted successessfully!" << endl;
+            cout << "Student ID: " << id << " has been deleted successfully!" << endl;
             return temp;
         }
         else
@@ -114,7 +99,7 @@ Node *search(Node *root, int id)
 {
     if (!root)
     {
-        cout << "This student ID:" << id << " is not founded!" << endl;
+        cout << "This student ID: " << id << " is not found!" << endl;
         return NULL;
     }
 
@@ -158,6 +143,15 @@ void descendingOrder(Node *root)
     descendingOrder(root->left);
 }
 
+void deleteTree(Node *root)
+{
+    if (!root)
+        return;
+    deleteTree(root->left);
+    deleteTree(root->right);
+    delete root;
+}
+
 int main()
 {
     Node *root = NULL;
@@ -183,20 +177,43 @@ int main()
             string name, major, department;
             cout << "Enter student ID: ";
             cin >> id;
+            if (id <= 0)
+            {
+                cout << "Invalid ID. Must be a positive integer." << endl;
+                break;
+            }
             cout << "Enter student name: ";
             cin.ignore();
             getline(cin, name);
+            if (name.empty())
+            {
+                cout << "Name cannot be empty." << endl;
+                break;
+            }
             cout << "Enter major: ";
             getline(cin, major);
+            if (major.empty())
+            {
+                cout << "Major cannot be empty." << endl;
+                break;
+            }
             cout << "Enter department: ";
             getline(cin, department);
-
+            if (department.empty())
+            {
+                cout << "Department cannot be empty." << endl;
+                break;
+            }
             enrollDate date;
             cout << "Enter enrollment date (day month year): ";
             cin >> date.day >> date.month >> date.year;
-
+            if (date.month < 1 || date.month > 12 || date.day < 1 || date.day > 31 || date.year < 1900 || date.year > 2100)
+            {
+                cout << "Invalid date. Month 1-12, Day 1-31, Year 1900-2100." << endl;
+                break;
+            }
             root = insert(root, id, &name, &major, &department, &date);
-            cout << "Student added successessfully!" << endl;
+            cout << "Student added successfully!" << endl;
             break;
         }
         case 2:
@@ -250,5 +267,6 @@ int main()
             cout << "Invalid choice! Please try again." << endl;
         }
     }
+    deleteTree(root);
     return 0;
 }
