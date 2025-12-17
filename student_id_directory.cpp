@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <limits>
 using namespace std;
 
 struct enrollDate
@@ -155,9 +156,9 @@ void deleteTree(Node *root)
 int main()
 {
     Node *root = NULL;
-    int choice = 0;
+    int choice;
 
-    while (choice != 6)
+    while (true)
     {
         cout << "\n=== Student ID Directory Menu ===" << endl;
         cout << "1. Insert new student" << endl;
@@ -167,21 +168,37 @@ int main()
         cout << "5. Display in descending order" << endl;
         cout << "6. Exit" << endl;
         cout << "Enter your choice: ";
-        cin >> choice;
+        if (cin >> choice)
+        {
+            if (choice == 6)
+                break;
+            if (choice < 1 || choice > 6)
+            {
+                cout << "Invalid choice! Please try again." << endl;
+                continue;
+            }
+        }
+        else
+        {
+            cout << "Invalid input. Please enter a number." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
+        }
 
         switch (choice)
         {
         case 1:
         {
             int id;
-            string name, major, department;
             cout << "Enter student ID: ";
-            cin >> id;
-            if (id <= 0)
+            while (!(cin >> id) || id <= 0)
             {
-                cout << "Invalid ID. Must be a positive integer." << endl;
-                break;
+                cout << "Invalid ID. Must be a positive integer. Enter again: ";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
             }
+            string name, major, department;
             cout << "Enter student name: ";
             cin.ignore();
             getline(cin, name);
@@ -206,11 +223,11 @@ int main()
             }
             enrollDate date;
             cout << "Enter enrollment date (day month year): ";
-            cin >> date.day >> date.month >> date.year;
-            if (date.month < 1 || date.month > 12 || date.day < 1 || date.day > 31 || date.year < 1900 || date.year > 2100)
+            while (!(cin >> date.day >> date.month >> date.year) || date.month < 1 || date.month > 12 || date.day < 1 || date.day > 31 || date.year < 1900 || date.year > 2100)
             {
-                cout << "Invalid date. Month 1-12, Day 1-31, Year 1900-2100." << endl;
-                break;
+                cout << "Invalid date. Month 1-12, Day 1-31, Year 1900-2100. Enter again: ";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
             }
             root = insert(root, id, &name, &major, &department, &date);
             cout << "Student added successfully!" << endl;
@@ -220,7 +237,12 @@ int main()
         {
             int id;
             cout << "Enter student ID to search: ";
-            cin >> id;
+            while (!(cin >> id))
+            {
+                cout << "Invalid ID. Please enter a number. Enter again: ";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
             search(root, id);
             break;
         }
@@ -228,7 +250,12 @@ int main()
         {
             int id;
             cout << "Enter student ID to delete: ";
-            cin >> id;
+            while (!(cin >> id))
+            {
+                cout << "Invalid ID. Please enter a number. Enter again: ";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
             root = deletion(root, id);
             break;
         }
