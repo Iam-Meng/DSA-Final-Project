@@ -135,13 +135,7 @@ void inOrder(Node *root)
         return;
 
     inOrder(root->left);
-    cout << "ID: " << root->id << " | Name: "
-         << root->name << " | Major: "
-         << root->major << " | Department: "
-         << root->department << " | Enrollment Date: "
-         << root->date.day
-         << "/" << root->date.month
-         << "/" << root->date.year << endl;
+    cout << "ID: " << root->id << " | Name: " << root->name << " | Major: " << root->major << " | Department: " << root->department << " | Enrollment Date: " << root->date.day << "/" << root->date.month << "/" << root->date.year << endl;
     inOrder(root->right);
 }
 
@@ -151,13 +145,7 @@ void descendingOrder(Node *root)
         return;
 
     descendingOrder(root->right);
-    cout << "ID: " << root->id
-         << " | Name: " << root->name
-         << " | Major: " << root->major
-         << " | Department: " << root->department
-         << " | Enrollment Date: " << root->date.day << "/"
-         << root->date.month << "/"
-         << root->date.year << endl;
+    cout << "ID: " << root->id << " | Name: " << root->name << " | Major: " << root->major << " | Department: " << root->department << " | Enrollment Date: " << root->date.day << "/" << root->date.month << "/" << root->date.year << endl;
     descendingOrder(root->left);
 }
 
@@ -465,6 +453,7 @@ int main()
         cout << "3. Delete student" << endl;
         cout << "4. Display in order (ascending)" << endl;
         cout << "5. Display in descending order" << endl;
+        
         cout << "6. Exit" << endl;
         cout << "Enter your choice: ";
         if (cin >> choice)
